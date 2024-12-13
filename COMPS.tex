@@ -1,0 +1,346 @@
+\documentclass[10pt,twocolumn]{article}
+
+% use the oxycomps style file
+\usepackage{oxycomps}
+
+% usage: \fixme[comments describing issue]{text to be fixed}
+% define \fixme as not doing anything special
+\newcommand{\fixme}[2][]{#2}
+% overwrite it so it shows up as red
+\renewcommand{\fixme}[2][]{\textcolor{red}{#2}}
+% overwrite it again so related text shows as footnotes
+%\renewcommand{\fixme}[2][]{\textcolor{red}{#2\footnote{#1}}}
+
+% read references.bib for the bibtex data
+\bibliography{references}
+
+% include metadata in the generated pdf file
+\pdfinfo{
+    /Title (The Occidental Computer Science Comprehensive Project: Goals, Timeline, Format, and Advice)
+    /Author (Justin Li)
+}
+
+% set the title and author information
+\title{Computer Science Comprehensive Project: \\ Predicting Batting Average and Pitching ERA Using Machine Learning}
+\author{Philycia Pedrosa}
+\affiliation{Occidental College}
+\email{pedrosa@oxy.edu}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+    Within the world of sports, many improvements in technology, science, as well as analysis have greatly improved the ability to predict outcomes. In recent years, a blend of sports, and technology has been used to support these predictions, which is through machine learning. In this case, machine learning uses enormous amounts of data generated from sports events, creating costly understandings through predictive models as well as analyzing trends. An important application of machine learning that has gained important attention involves predicting sports outcomes. From the determination of the winner of a game to the prediction of the performance of individual athletes, the importance of machine learning in the world of sports analytics has been increasing. Challenges as well as limitations are faced in the use of machine learning for sports prediction. Many issues are encountered with this approach. Though many data sources exist to create these predictive models, many factors influence them. Furthermore, sports present an element of unpredictability as well. Skillset, strategy, as well as luck contribute to the complication of developing a reliable predictive model. Along with sports, people constantly seek improvement or refinement. This document serves describes the Oxy CS Comps process.
+
+\section{Problem Statement}
+
+    Machine learning can be applied to baseball analytics, where player performance metrics like batting average and earned run average are critical for decision-making. These metrics not only influence team strategies but also shape player evaluations and contracts. Each contributing factor must be carefully accounted for to enhance model accuracy. Data analysis in baseball has mainly relied on straightforward historical averages and domain expertise to calculate player performance. Oftentimes, these analyses fail to take into account the complex, non-linear relationships in the data. My project aims to address these challenges by applying machine learning techniques to predict batting average and earned run average. Ultimately, working to help with the competitiveness of the players, engagement of the fans, and player development through performance evaluation. 
+
+    This research focuses on the use of machine learning models to predict two essential metrics in baseball: batting average and pitching ERA (earned run average). In my project, I used historical data provided by the pybaseball library in Jupyter Notebook along with downloaded files from the Baseball Reference website. More specifically, I used the previous data to predict for the 2024 season performance of two players from the Los Angeles Dodgers: Mookie Betts, a notable batter, and Jack Flaherty, a skilled pitcher. For my research, I used three different machine learning models - linear regression, random forest, and gradient boosting - to determine their effectiveness in predicting these metrics. By comparing the predictive performance of these models, I wanted to answer two key questions:
+\begin{itemize}
+    \item Can machine learning accurately predict player performance in terms of batting average and pitching ERA?
+\end{itemize}
+\begin{itemize}
+    \item Which machine learning model performs best for these predictions?
+\end{itemize}
+ 
+
+\section{Technical Background}
+
+To understand the application of machine learning to predicting baseball performance metrics, it is important to understand the foundational concepts of machine learning, supervised learning, and the specific models used in my project: linear regression, random forest, and gradient boosting. In addition, background information about the baseball metrics I am predicting is important as well. 
+
+\subsection{ Player Performance Metrics}
+
+    Batting Average is the measure of a player’s hitting performance, calculated as the number of hits divided by the number of official at-bat \cite{1}. A hit is considered successful and counted towards batting average if it gets through the defense without any mistakes or errors. An official at-bat is the amount of times the batter goes up to hit, excluding walks and hit  by pitches. A higher batting average indicates better hitting performance. Any value over 0.300 is an excellent batting average, however, batters usually average between 0.200 and 0.300. 
+
+    Pitching ERA (earned run average) measures a pitcher’s effectiveness by calculating the average number of earned runs allowed per nine innings pitched. Earned runs are runs that were scored by the opposing team without any mistakes/errors or passed balls. Innings pitched is the number of out the pitcher records, divided by 3. A lower earned run average indicates better pitching performance. Any value over 5 indicates a poor performance. The average ERA is between 3.5 and 4.5 earned runs per nine innings. 
+
+\subsection{Introduction to Machine Learning}
+
+Machine learning is a field of artificial intelligence that allows computers to learn from data and past experiences to improve their performance over time \cite{3}. It allows for large amounts of data to be collected, analyzed, and predicted. These systems analyze patterns and trends in past data to make predictions or decisions. The algorithms used repeat this process of evaluating and optimization to assist in improving the accuracy \cite{4}. In the context of sports, these techniques can help influence coaching recruitment/decisions or even enhance fan engagement. Additionally, it allows us to tackle complex problems that traditional methods struggle to solve. In this section, I will be going over the important components relevant to machine learning to create predictive models.  
+
+\subsection{Supervised Learning}
+
+    There are two main categories that these machine learning models are placed in: supervised and unsupervised learning. In the case of my project, I used models categorized under supervised learning. Supervised learning provides a robust framework for predicting numerical outcomes by training models on historical data where each input (player statistics) is paired with the corresponding output (batting average and pitching ERA). The goal is for the model to learn from these examples and make accurate predictions on new, unseen data. There are two main types of supervised learning: regression and classification. Regression focuses on predicting continuous numerical values, whereas classification focuses on predicting categorical values \cite{5}. In this case, regression models are being used because the target variables - batting average and pitching ERA - are continuous. 
+
+\subsubsection{Linear Regression}
+
+    Linear regression is a straightforward and reliable starting point for predicting player performance. It helps establish a baseline by assuming a simple and direct relationship between the input factors and target statistic. Ultimately, making it easier to interpret how different features influence the outcome. For my project, linear regression allows to explore factors like player’s performance in previous season and how they are connected to the statistics I am trying to predict for. The model creates a simple predictive equation that can be expressed as:
+
+\[
+Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \dots + \beta_nX_n
+\]
+
+Where:
+\begin{itemize}
+    \item $Y$represents the target variable (batting average or ERA)
+    \item $\beta_0$ is the intercept
+    \item $\beta_1$ to $\beta_n$ are the coefficient weights for each input feature (the influence/impact)
+    \item $X_1$ to $X_n$ are the input features
+\end{itemize}
+
+While linear regression is the most simple and easy-to-understand model, it assumes that the relationship between inputs and outputs is linear. This simplicity makes a good starting point, however, it may not capture the complexities of real-world data. 
+
+\subsection{Ensemble Method}
+
+    Ensemble methods relate to my project as they are used to improve the accuracy and reliability of the machine learning models. Additionally, player performance metrics like batting average and earned run average are influenced by a variety of interconnected factors, such as hit tendencies, strikeout rates, walk rate, etc. These relationships are rarely linear. Ensemble methods - random forest and gradient boosting - are designed to handle such complexities by combining multiple weak models (decision trees) to capture non-linear patterns that simpler models like linear regression may miss \cite{6}.   
+    
+\subsubsection{Random Forest}
+
+Random forest plays a crucial role for predicting batting average and pitching ERA by using the ensemble approach. It is an ensemble learning method that builds multiple decision trees during training and combines their predictions \cite{7}. Moreover, it utilizes a \textbf{bagging} method where each tree is trained on a random subset of the data. Each tree splits the data based on feature thresholds, capturing local patterns in the subsets of the data. In the case of my project, the model handles diverse and interdependent features involved with predicting batting average and pitching ERA. 
+
+To predict Mookie Betts’ batting average, the model may learn that pull rate is a key feature for high batting averages when combined with low strikeout rates and high walk rates. In addition, it can use these interactions to predict Betts’ batting average for 2024 based on his previous performances. For predicting Jack Flaherty’s ERA, the model might identify that a combination of low walks allowed and high strikeouts correlates strongly with a lower ERA. It could also help in predicting his next season stats. 
+
+\subsubsection{Gradient Boosting}
+
+Another ensemble approach I used in my project is gradient boosting. Because of its structure, it is good at picking up on the patterns that may be too subtle for other models to detect. The model works by training a sequence of decision trees, where each tree focuses on correcting the errors made by the previous ones \cite{8}. This process helps the model in improving its predictions over time, making it effective for identifying complex relationships in the data. Similar to random forest, the target variables are influenced by the interactions between the features. A batter’s batting average might improve with a high pull rate, but only if combined with a low strikeout rate and a high walk rate. As for a pitcher’s ERA, the average may decrease with higher strikeouts, but only if walks allowed remain low. 
+
+ Gradient boosting focuses on the residual errors left by the previous trees, ultimately focusing on the difficult patterns. Along with this process, the model will adjust the weights (influence) for the mispredicted samples, making sure that the challenging data points are given more attention. Because each step in the model builds on the previous one, it should progressively improve the predictions. For Betts, the model can learn how statistics such as BABIP, OPS, and strikeout rate interact over multiple seasons to predict for next season’s batting average. As for predicting Flaherty’s next season average, the model might identify that a lesser amount of walks allowed has a significant effect on ERA when combined with an increase in strikeouts.  
+
+\section{Prior Work}
+
+An article I found resourceful was, “Forecasting Outcomes of Major League Baseball Games Using Machine Learning” \cite{9} by Andrew Cui. Their thesis investigates the application of various machine learning models to predict the outcomes of MLB games, putting an emphasis on feature engineering and model selection. The study highlights the critical role of feature engineering in improving model performance. It identifies key predictvie factors, such as team statistics, player contributions, and situational data (weather, ballpark dimensions, etc). While the focus of Cui’s study is predicting game outcomes, the underlying objective of identifying meaningful patterns and trends in baseball data is similar to the goal of trying to understand the relationship between the features and output. Both utilize machine learning to make data-driven predictions to ultimately enhance decision-making in baseball. Furthermore, both are interested in using these predictive analytics towards game strategies, player management, and fan engagement. 
+
+In the article, “Predictive and Retrospective Analysis of Soccer Matches in a League,” \cite{10} Rue and Oyvind focus on the application of statistical methods to predict and analyze outcomes and asses the teams’ performance. The article focuses on boosting methods like gradient boosting and discusses the effectiveness of the model dealing with high-dimensional datasets. In regards to my project, player performance metrics can be considered a high-dimensional space, ultimately helping me in the model selection. 
+
+Machine learning has been increasingly used in baseball analytics, transforming how player performance is evaluated and outcomes are predicted. One notable source, “Machine Learning Applications in Baseball: A Systematic Literature Review,” \cite{11}provides a comprehensive overview of various machine learning techniques used in baseball analytics. This review connects directly to the goals and methods used in my project, offering valuable context and validation for my approaches. This article explores machine learning models such as linear regression, decision trees, ensemble techniques, and deep learning. These models were applied to a wide range of analyses from predicting game outcomes to evaluating player performance. Additionally, evaluation metrics such as mean absolute error (MAE) and r-squared values were included in comparing accuracies and effectiveness. Moreover, by applying the methods suggested in the review, my project tackles the challenges of non-linear relationships and data variability. Overall, the article provides valuable insights into the application of complex machine learning techniques.
+
+\section{Methods}
+Here is a step-by-step process for a supervised machine learning process:
+\begin{enumerate}
+    \item Problem Definition 
+    \item Data Collection and Preparation 
+    \item Data Splitting (Train/Test)
+    \item Model Selection
+    \item Model Evaluation
+    \item Hyperparameter Tuning
+    \item Cross-Validation
+    \item Deploy Model 
+\end{enumerate}
+
+\subsection{Data Collection and Preprocessing}
+
+The first step of the machine learning process is to figure out what data you want to use and where you can obtain it from. Gathering relevant data is important in creating these models. Without data, machine learning cannot exist \cite{12}. In my project, to create these models, I used statistics for the individual players: Mookie Betts and Jack Flaherty. As mentioned before, I was able to obtain Mookie Betts hitting statistics through the \textbf{pybaseball} \cite{13}library in Jupyter Notebook and Jack Flaherty pitching statistics through the \textbf{Baseball Reference} website \cite{14}. Raw data collected often requires preprocessing to make sure the quality, consistency, and compatibility for analysis are good. Some of these steps include removing duplicates or irrelevant data and handling missing values. As previously stated, I used seasonal statistics for both players from 2017 to 2023. Additionally, I decided to drop the 2020 seasonal stats due to COVID. The main reason I dropped it was that all teams and players played significantly fewer games than in a regular season, to which the data from that year could skew the evaluations and predictions. Moreover, I wanted to use data between a 3-6 year time frame because it provides a balance between recency and reliability. This window allows for a more accurate reflection of a player’s “true” skill level and helps minimize the influence of outliers and random variance. A shorter window may reflect recent performance but also risks being less predictive due to limited data. A longer window may show outdated performance levels that no longer represent the player’s current ability. 
+ 
+\subsection{Feature Selection}
+
+In the section prior, I talked about data preprocessing which is connected with feature selection. Features are the input variables that are trained in the machine learning models that ultimately help predict for the target variable (output variable). With predicting player performance metrics, certain statistics have a significant impact. Because I play softball, I figured that I would have enough knowledge and expertise to choose the features myself. Below are the features I chose for batting average and earned run average. 
+
+Batting average: batting average for balls in play (BABIP), on-base percentage plus slugging percentage (OPS), weighted on-base average (wOBA), on-base percentage (OBP), slugging percentage (SLG), weighted runs created plus (wRC+), hard hit rate (Hard\%), isolated power (ISO), base on balls rate (BB\%), line drive rate (LD\%), center field rate (Cent\%), contact rate (Cont\%), fly ball rate (FB\%), pull percentage (Pull\%), strikeout rate (K\%), ground ball rate (GB\%), and opposite field rate (Oppo\%)
+
+Pitching ERA: innings pitched (IP), runs (R), homeruns (HR), walks (BB), strikeouts (SO), hit batter/hit by pitch (HBP), hits per nine innings (H9), homeruns per nine innings (HR9), fielding independent pitching (FIP), walks plus hits per inning pitched (WHIP), batting average against (BA), on-base percentage against (OBP), slugging against (SLG), on-base percentage plus slugging against (OPS), and batting average for balls in play against (BAbip) 
+
+Note: The main reason I used the same features for all of the models is so that I could compare them to see which one(s) would be the most efficient and beneficial for predicting for batting average and earned run average.
+
+\subsubsection{Polynomial Features}
+
+As part of the preprocessing stage, polynomial features and standard scaling are crucial for improving the performance and applicability of linear regression, especially when working with complex datasets. I mentioned before that linear regression assumes that there is a linear relationship between the input features and target variable. In the case of my project, relationships between features like strikeout rate, walk rate, and batting average may be non-linear. With polynomial features, it allows to model these complexities by creating higher-degree terms, where the “degree” is used to control the number of features added\cite{15}. For the model used for Mookie Betts, the degree was raised to the power of 2. Furthermore, these new variables represent one variable multiplied by another, which is displayed and explained a bit more in the Results and Discussion section.  
+
+\subsubsection{Standard Scaling}
+Standard scaling is also used to enhance the linear regression model for Jack Flaherty’s predictions and evaluations. Standard scaling is necessary in this case due to the features having different scales. For example, strikeout (SO) can range from 0 to around 150 or more, whereas batting average against (BA) can range from 0 to 1, to which the optimization process can become unstable. With standard scaling, it ensures numerical stability by helping achieve normal distribution of the data with a mean of 0 and a standard deviation of 1 \cite{16}. Without scaling, the features with larger ranges will dominate the regression coefficients, overshadowing the features with smaller ranges. This may cause issues, especially if the smaller-scale features are more important. Here is the equation below. 
+\[
+z = \frac{x - \mu}{\sigma}
+\]
+
+Where:
+\begin{itemize}
+    \item $x$ is the original value
+    \item $\mu$ is the mean of the feature
+    \item $\sigma$ is the standard deviation of the feature
+\end{itemize}
+
+\subsection{Data Splitting (Train/Test)}
+
+After preprocessing the data, it then needs to be split into training and testing sets \cite{17}. When splitting, it is typically known for the data sets to be split 80/20 where 80\% is for training and the remaining 20\% is for testing. This means that 80\% of the data goes to training for the model, which is where the patterns and trends are found. Once the model is trained, the remaining 20\% of data is used to test the mode, which is where the accuracy of the model can be determined. Additionally, feature selection is used to create new features, change existing ones, or possibly identify patterns from the data. Data preprocessing is important for preparing the dataset for modeling to enhance the performance of the models. 
+
+\subsection{Hyperparameter Tuning and Cross-Validation}
+
+Hyperparamter Tuning is an important step in optimizing the performance of the machine learning models: random forest and gradient boosting. Hyperparameters are configuration settings that control the behavior of the algorithms and is set before the training begins. Throughout my project, I used \textbf{grid search} and \textbf{cross-validation }to find the optimal combination of hyperparameters. For the random forest model, after using the grid search method, the \textbf{max\_depth, min\_samples\_leaf, and n\_estimators} were tuned. As for gradient boosting, the \textbf{max\_depth, n\_estimators, and learning\_rate }were tuned.
+
+\begin{itemize}
+    \item \textbf{max\_depth} controls/ limits the depth of each tree 
+    \item \textbf{n\_estimators} determines the number of trees (random forest); specifies the number of boosting iterations (gradient boosting)
+    \item \textbf{learning\_rate} controls the contribution of each tree to the final prediction 
+    \item \textbf{Grid search} is an approach to hyperparameter tuning that evaluates all possible combinations of specified hyperparameter values. After measuring all combinations, the best combo is given to then be used for cross-validation. 
+\end{itemize}
+
+Cross-validation is an evaluation technique that was used in my project to assess the performance of the machine learning models. It is used to measure how fit and reliable the models are in regards to being exposed to unseen data \cite{18}. This technique involves dividing the dataset into multiple subsets. My project utilizes the K-Fold Cross-Validation, where the model is split into equally sized folds. Then the model is trained on the subset of data and tested on the remaining portion. The final evaluation is averaged across all folds. For my project, I was only able to do folds of 2 because the dataset was too small to do any more. When I tested with more folds, it would result in NaN (not a number) as the output for the r-squared value, meaning that there are issues within the dataset, which could be due to insufficient size. In this case, the six years of overall seasonal data is too little.  
+
+\section{Evaluation Metrics}
+
+\textbf{Mean Absolute Error (MAE) }is the measure of prediction accuracy for the regression models \cite{19}. It calculates the average magnitude of errors between the predicted values and the actual values. A lower mean absolute error indicates better model performance. Additionally, this measure is easier to interpret since it’s the same scale as the target variable. 
+The formula for Mean Absolute Error (MAE) is:
+
+\[
+\text{MAE} = \frac{\sum_{i=1}^{n} \lvert y_i - x_i \rvert}{n}
+\]
+
+Where:
+\begin{itemize}
+    \item $n$ is the total number of data points
+    \item $y_i$ is the actual value
+    \item $x_i$ is the predicted value
+    \item $\lvert y_i - x_i \rvert$ is the absolute difference between the actual and predicted values
+\end{itemize}
+
+\textbf{R-squared} is the measure that explains how well the independent variables in a model predict the dependent variable \cite{20}. It helps in evaluating how fit the model and if it is reliable. The variance shows the spread of dispersion of data in the dataset. If r-squared is 1, then the model perfectly explains the variance of the variables. 0 means it does no better than the mean of the target variables. Less than 0 is worse than the baseline, indicating poor fit or inappropriate model assumptions. For instance, an r-squared value of 0.80 means 80\% of the variance in the dependent variable is explained by the independent variables in the model, while the remaining 20\% is unexplained. The higher the value, the better.
+
+\subsection*{Batting Average - Mookie Betts}
+\[
+\begin{array}{|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{MAE} & \textbf{R-squared} & \textbf{Predictions} \\ \hline
+\text{Linear Regression} & 0.016 & 0.125 & 0.307 \\ \hline
+\text{Random Forest} & 0.028 & -1.570 & 0.298 \\ \hline
+\text{Gradient Boosting} & 0.019 & 0.171 & 0.307 \\ \hline
+\end{array}
+\]
+\subsection*{Pitching ERA - Jack Flaherty}
+\[
+\begin{array}{|c|c|c|c|}
+\hline
+\textbf{Model} & \textbf{MAE} & \textbf{R-squared} & \textbf{Predictions} \\ \hline
+\text{Linear Regression} & 0.930 & 0.101 & 6.750 \\ \hline
+\text{Random Forest} & 0.869 & 0.589 & 5.955 \\ \hline
+\text{Gradient Boosting} & 0.714 & 0.643 & 6.750 \\ \hline
+\end{array}
+\]
+
+    After the fine tuning of hyperparameters and cross-validation, it is shown that the smallest mean absolute error value when predicting for Betts’ batting average is from the linear regression model of 0.016 and the runner up is gradient boosting with a value of 0.019. While taking a look at the MAE for Flaherty’s earned run average, gradient boosting had the lowest value of 0.714 and random forest was the runner up with a value of 0.869. As mentioned before, the reason the MAE values are vastly different between the batting average and pitching ERA is due to the scaling of the original values. The batting average values typically range around the 0.200 to 0.300 average, whereas the pitching ERA ranges between 3.0 to 4.5 average. 
+    
+    Now looking at the r-squared values for Betts’, although it’s not as high as I would have liked it to be, gradient boosting has the highest value of 0.171 amongst the models, with linear regression being the  runner up with a value of 0.125. For Flaherty, gradient boosting also had the highest value of 0.643 and the next best being random forest with a value of 0.589.  
+    
+    Once the values are analyzed separately, the next thing I did was compare the models evaluation metrics together. For the batting average models, although linear regression has a smaller MAE than gradient boosting, this is where the other evaluation metric, r-squared, comes into play. The difference between the two MAEs is very miniscule, so by looking at the other value, it will assist in determining the better model. The gradient boosting r-squared value in a sense is a bit more reliable by about 4.6\%. For the earned run average models, gradient shows better performance in both mean absolute error and r-squared values. 
+
+\section{Results and Discussion}
+\subsection{Heatmaps}
+The heat maps that I created are used to help visualize the relationships between the different features and the target variables (batting average and pitching ERA). The values range from 1 to -1. However, -1 doesn’t necessarily mean that it’s a bad thing. The closer the value is to 1 means that feature has a strong positive correlation to the target variable. On the other hand, the closer the value is to -1, means that the feature has a strong negative correlation to the target variable. The more concerning values to worry about are the features that have correlation values closer to 0, meaning there is little to no correlation.   
+
+In the heatmap shown for Mookie Betts, it’s important to look at the top variable (AVG) and compare the values within that row. As one can see, BABIP (0.99) and OPS (0.97) have strong positive correlation, meaning that as those values increase, so will the batting average. Additionally, to the far right of the heatmap, the Oppo\% (-0.64) have a strong negative correlation, meaning that as that value increases, the batting average will decrease. Moreover, the K\% (0.18) and Pull\% (0.20) are the closest values to 0, to which they have the least amount of correlation with the batting average. If I were to do this experiment again, I would drop those values as they don’t have as much as an effect on the batting average.  
+
+In the heatmap shown for Jack Flaherty, it’s important to look at the bottom row and compare the values to the ERA. The feature with the strongest positive correlation is SLG (0.96), representing how as the slugging value against the Flaherty increases, so will the ERA. On the other hand as the IP (0.78) increases, a majority of the time, the earned run average will decrease. In this case, there aren’t very many values super close to 0, indicating that these set of features are a good set of data to use towards pitching ERA. 
+
+{\centering
+\includegraphics[width=0.50\textwidth]{batting average heatmap.png}}
+{\centering
+\includegraphics[width=0.50\textwidth]{pitching ERA heatmap.png}}
+
+\subsection{Feature Importance Charts}
+
+These bar charts represent \textbf{feature importance} across different machine learning models - linear regression (plus with polynomial features), random forest, and gradient boosting - applied to batting average and earned run average. Each model evaluates and ranks the features differently based on their underlying mechanics, which accounts for the variation in importance rankings. The models provide unique insights into which features drive predictions, reflecting differences in how relationships between features and the target variable are modeled. For the blue bar charts, the x-axis represents the features (input variables) and the y-axis represents the importance values. The importance is based on the absolute values of the model’s coefficients. A larger value indicates that the corresponding feature has a strong relationship with the target variable. In regards to the unevenness of the bars, it is expected as feature engineering was not used, thus leading to irrelevant or redundant features included. Additionally, it’s natural for certain features to be much more predictive than others. Sometimes, it’s a good thing for them to be uneven as it can reflect natural variability. 
+
+Linear regression can be used for interpretable, straightforward linear dependencies. Utilize random forest and gradient boosting for more robust, non-linear relationships. Consider polynomial regression as a way to uncover the complex, interactive effects between features. 
+ 
+\subsubsection{Linear Regression}
+{\centering
+\includegraphics[width=0.50\textwidth]{FI - LR - BA.png}}
+Importance is derived from interaction terms and higher-degree polynomial features, with coefficients indicating the weight of their influence. OPS wRC+ interaction term has the highest positive coefficient, indicating that combining a player’s ability to get on base, hit for power (OPS), and create runs (wRC+) is a strong predictor of the target variable. wRC+ K\% has a low negative coefficient showing that striking out frequently negatively impacts hitting performance, as expected. 
+
+ 
+{\centering
+\includegraphics[width=0.50\textwidth]{FI - LR - ERA.png}}
+The most influential feature would be the homeruns allowed per nine innings (HR9), where it aligns with baseball intuition as allowing more home runs will directly impact ERA negatively. The least influential feature was innings pitched (IP) as it’s not as significant to the other pitching metrics given. 
+
+ 
+
+\subsubsection{Random Forest}
+{\centering
+\includegraphics[width=0.50\textwidth]{FI - RF - BA.png}}
+The top feature is the GB\%, indicating that Betts’ ground ball tendencies strongly correlate with his batting average. Ground balls can have a complex relationship with hitting outcomes depending on his speed and opposing team’s defense. BB\% is relatively low because although it indicates plate discipline, it still has a weaker direct impact on batting average. 
+
+ 
+{\centering
+\includegraphics[width=0.50\textwidth]{FI - RF - ERA.png}}
+HBP is the top feature, suggesting that the number of batters hit by a pitch correlates strongly with ERA. this is expected since hitting batters leads to more baserunners, increasing the chance of runs scoring. FIP has the lowest importance score as it’s designed to isolate pitching performance from fielding effects. 
+
+ 
+\subsubsection{Gradient Boosting}
+{\centering
+\includegraphics[width=0.50\textwidth]{FI - GB - BA.png}}
+OPS is the most influential impact, dominating over the other features. OPS combines on-base percentage and slugging percentage, effectively summarizing a player’s ability to get on base and hit for power, both of which are critical to batting success. Oppo\% has the weakest correlation that can be caused by feature redundancy, meaning that features like BABIP and LD\% may have already captured the benefits of hitting to the opposite field. 
+
+ 
+{\centering
+\includegraphics[width=0.50\textwidth]{FI - GB - ERA.png}}
+OPS is the most important feature, with the highest importance score. This feature captures a batter’s ability to get on base against Flaherty, which directly influences his ERA by measuring how effectively opponents can generate offense. FIP has a low importance score, due to the model focusing on the dominating features of OPS and WHIP. 
+
+\subsection{Conclusion}
+Through this research, I was partially able to solve the problem of whether machine learning can be used to accurately predict baseball performance in terms of batting average and pitching ERA. With the use of evaluation metrics - mean absolute error and r-squared values - I found that with the features I chose for batting average, the machine learning models do not accurately predict for the 2024 season for Mookie Betts. However, it is a bit different for the predictions for Jack Flaherty and his 2024 season. The evaluation metrics did show more reliability except for linear regression. Although the models for both batting and pitching were able to predict values, they were unrealistic values to be predicted for the 2024 season. Ultimately, for both batting average and pitching ERA, I would recommend using gradient boosting as it understands the complex and non-linear relationship between the features and target. I believe that the main reason the models did not perform as well as I wanted them to is because of the feature selection process. Although I have played softball for most of my life, this experiment made me realize how many different factors actually effect certain statistics and how not straightforward various stats effect others. Now that I know which machine learning model did the best for predicting batting average and pitching ERA, if I were to do this experiment again, I would use gradient boosting, but put an emphasis on the feature selection/engineering process.  
+
+\section{Ethical Considerations}
+Throughout the years, machine learning technologies have gone through many developments and can be beneficial across various fields. However, with these developments, there are quite a handful of ethical concerns that rise to the surface. This section will be investigating some key ethical concerns associated with machine learning, such as privacy, data quality, and technical solutionism. It will examine the implications of these concerns and discuss potential ways to address them. By understanding and addressing these ethical concerns, it could lead to the responsible development for machine learning technologies, ensuring a positive contribution to society and minimizing its harms. 
+
+\subsection{Privacy, Security, and Consent}
+Invasion of privacy is a significant ethical concern associated with machine learning. Machine learning algorithms often require access to large amounts of data, sometimes including personal information, to make accurate predictions or classifications. However, the collection and use of this data can raise concerns about a team or its players. In general, softball websites typically have information about the background of the players, such as where the players were from, previous teams they’ve come from, birth date, and so on. This could raise concerns because everyone has access to this information and it could be dangerous for safety reasons. To address these privacy concerns, creators and organizations must prioritize data protection measures. In some cases, privacy-enhancing technologies are used as a way to protect any personal data \cite{21}. With my project, I was able to pull from the pybaseball library, avoiding any personal information for Mookie Betts. As for Jack Flaherty, I did pull data from the Baseball Reference website without doing a deep dive into his personal life.  Ultimately, it is quite difficult for athletes and other users to consent to all the possible uses of their data when starting a certain platform. Granted sometimes the user can get a notification or option for the platform to track their information, however, most skip over and accept. It is also even more difficult for the data to become more consensual due to the lack of privacy and communication. In general, an effective way to strengthen privacy and security is by adding more security frameworks, safeguards, or even utilizing other technologies that avoid personal information. 
+
+\subsection{Data Quality}
+As for the data quality of machine learning, with vast amounts of of processing required for certain tasks, the team or players can be affected. For the upkeep and maintenance of data used, there could be issues with it being accessible or accurate. There are times where the stats could be incorrect, thus leading to errors within the results. For instance, when I played a few of my games, there were times when we had scorekeepers and people recording what happened during the game. However, upon looking back at the website where the records were displayed, some of the information was mixed up, missing, or wrong. It’s important to have the correct information, especially because in machine learning the algorithms rely heavily on large amounts of data. If the data is wrong, then the patterns and trends that the algorithms try to find will be incorrect, resulting in inaccurate predictions/outcomes. If the patterns and trends lead to poor outcomes, it could also result in biased assumptions \cite{22}. While doing my project, I checked various websites that stored baseball statistics and used them along with the pybaseball library to cross-reference the data to confirm the data was the same across all platforms. My project aims to make sure that the data stays consistent with the recordings of the games. Something that the coaches and players do to reduce any mistakes is that both will take notes about every play and at the end, will compare. Although this is not done through technology, it’s a step in the right direction. Later on, developments can be made where technology can scan through a recording and note down either everything that is happening or it could listen to commentary to match with the end results/numbers. 
+
+\subsection{ Technical Solutionism}
+Although technology can be used as a powerful tool for improving and strategizing, it doesn’t necessarily have to be a resource to fall back on. My project will focus on the predictions of Mookie Betts batting average and Jack Flaherty’s pitching ERA, which will rely on many factors included in the game such as on-base percentage, strikeout rates, etc. My project can be optional in the sense that it’s not necessarily needed within the realm of sports. One can argue against using technology in that the teams and individual players can solely choose what to practice based on how their past performance was. There are times in sports, the data/numbers don’t match with what happened in the game depending on the situation. This could be represented when the stats show there was a negative result, but during the actual game, there was a positive outcome. This concern is quite difficult to deal with mainly because there are vast amounts of data to take into consideration, but also dealing with personal or team improvement isn’t dependent on machine learning algorithms or other technologies. Sometimes machine learning might not be able to capture these mistakes or things that happen in life such as COVID. COVID created such a drastic drop in numbers across all the teams, ultimately leading me to decide to drop that season. This could lead to skewed numbers or unreliable models. Moreover, relying on technology can lead to confusion or misconceptions of ‘fairness’ or discrimination’ \cite{23}. The aim of my project is to have coaches and athletes not necessarily rely on the technology, but know that it is there to help and not harm. Although physically practicing to work on improvements is effective, but with these machine learning technologies, having the predictions can help them create a goal to get better. They can see the areas that need more work and create a practice plan from there.
+
+\section{References}
+\cite{1} MLB. (n.d.). \textit{Batting Average | Glossary}. MLB.com. https://www.mlb.com/glossary/standard-stats/batting-average
+
+\cite{2} Brown, S. (2021, April 21). \textit{Machine learning, explained}. MIT Sloan; MIT Sloan School of Management. https://mitsloan.mit.edu/ideas-made-to-matter/machine-learning-explained
+
+\cite{3} IBM. (2024). \textit{What Is Machine Learning?} IBM. https://www.ibm.com/topics/machine-learning
+
+\cite{4} Bisht, A. (2019, January 8). \textit{ML | Classification vs Regression - GeeksforGeeks}. GeeksforGeeks. https://www.geeksforgeeks.org/ml-classification-vs-regression/
+
+\cite{5} Ismiguzel. (2021, July 30). \textit{Practical Guide to Ensemble Learning - Towards Data Science}. Medium; Towards Data Science. https://towardsdatascience.com/practical-guide-to-ensemble-learning-d34c74e022a0
+
+\cite{6} \textit{1.11. Ensembles: Gradient boosting, random forests, bagging, voting, stacking}. (2024). Scikit-Learn. https://scikit-learn.org/stable/modules/ensemble.html\#random-forest
+
+\cite{7} Masui, T. (2022, February 12). \textit{All You Need to Know about Gradient Boosting Algorithm − Part 1. Regression}. Medium. https://towardsdatascience.com/all-you-need-to-know-about-gradient-boosting-algorithm-part-1-regression-2520a34a502t
+
+\cite{8} Eas, Thesis, S., \& Cui, A. (2020). \textit{Forecasting Outcomes of Major League Baseball Games Using Machine Learning}. https://fisher.wharton.upenn.edu/wp-content/uploads/2020/09/Thesis\_Andrew-Cui.pdf
+
+\cite{9} Rue, H., \& Salvesen, O. (2000). Prediction and Retrospective Analysis of Soccer Matches in a League. \textit{Journal of the Royal Statistical Society: Series D (the Statistician)}, \textit{49}(3), 399–418. https://doi.org/10.1111/1467-9884.00243
+
+\cite{10} Koseler, K., \& Stephan, M. (2017). Machine Learning Applications in Baseball: A Systematic Literature Review. \textit{Applied Artificial Intelligence}, \textit{31}(9-10), 745–763. https://doi.org/10.1080/08839514.2018.1442991
+
+\cite{11} \textit{How data collection \& data preprocessing assist machine learning.} (n.d.). Www.turing.com. https://www.turing.com/kb/how-data-collection-and-data-preprocessing-in-python-help-in-machine-learning
+
+\cite{12} LeDoux, J. (n.d.). \textit{pybaseball: Retrieve baseball data in Python}. PyPI. https://pypi.org/project/pybaseball/
+
+\cite{13} Baseball Reference. (2014). \textit{Jack Flaherty Stats | Baseball-Reference.com}. Baseball-Reference.com. https://www.baseball-reference.com/players/f/flaheja01.shtml/
+
+\cite{14} Brownlee, J. (2020, May 28). \textit{How to Use Polynomial Feature Transforms for Machine Learning}. Machine Learning Mastery. https://machinelearningmastery.com/polynomial-features-transforms-for-machine-learning/
+
+\cite{15} GeeksforGeeks. (2021, February 21). \textit{Data Pre-Processing wit Sklearn using Standard and Minmax scaler}. GeeksforGeeks. https://www.geeksforgeeks.org/data-pre-processing-wit-sklearn-using-standard-and-minmax-scaler/
+
+\cite{16} \textit{How data collection \& data preprocessing assist machine learning.} (n.d.). Www.turing.com. https://www.turing.com/kb/how-data-collection-and-data-preprocessing-in-python-help-in-machine-learning
+
+\cite{17} Iván Palomares Carrascosa. (2024, November 14). \textit{Mastering the Art of Hyperparameter Tuning: Tips, Tricks, and Tools - MachineLearningMastery.com}. MachineLearningMastery.com. https://machinelearningmastery.com/mastering-the-art-of-hyperparameter-tuning-tips-tricks-and-tools/
+
+\cite{18} Sacthesw, F. (2024, May 10). \textit{Understanding Cross-Validation: A Key Machine Learning Technique}. Future Machine Learning. https://futuremachinelearning.org/understanding-cross-validation-a-key-machine-learning-technique/
+
+\cite{19} How to Calculate Mean Absolute Error in Python? (2021, November 26). GeeksforGeeks. https://www.geeksforgeeks.org/how-to-calculate-mean-absolute-error-in-python/
+
+\cite{20} GeeksforGeeks. (2023, July 6). \textit{R Squared | Coefficient of Determination}. GeeksforGeeks. https://www.geeksforgeeks.org/r-squared/\#what-is-rsquared
+
+\cite{21} El Mestari, S. Z., Lenzini, G., \& Demirci, H. (2024). Preserving data privacy in machine learning systems. \textit{Computers \& Security}, \textit{137}, 103605. https://doi.org/10.1016/j.cose.2023.103605
+
+\cite{22} Sutaria, N. (2022, August 29). \textit{Bias and Ethical Concerns in Machine Learning}. ISACA. https://www.isaca.org/resources/isaca-journal/issues/2022/volume-4/bias-and-ethical-concerns-in-machine-learning
+
+\cite{23} Cath, C. (2018). Governing artificial intelligence: Ethical, legal and technical opportunities and challenges. \textit{Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences}, \textit{376}(2133). https://doi.org/10.1098/rsta.2018.0080
+
+‌
+
+ 
+\appendix
+
+\section{Replication Instructions}
+
+Replication instructions can be found in the \verb|README.md| file for the project's repository.
+
+\section{Code Architecture}
+
+The layout and architecture of the code can be found in the
+\verb|CODEARCHITECTURE.md| file in the project's repository.
+\printbibliography
+
+\end{document}
