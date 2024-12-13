@@ -11,7 +11,7 @@ To successfully replicate this project, you will need:
    - Download from [Anaconda's official website](https://www.anaconda.com/).
    - Provides a pre-packaged environment with Python, Jupyter Notebook, and many libraries.
 
-2. **Jupyter Notebook**:
+2. **Jupyter Notebook**: (Version 6.5.2)
    - Installed automatically with Anaconda.
    - Alternatively, install it manually with:
      ```bash
